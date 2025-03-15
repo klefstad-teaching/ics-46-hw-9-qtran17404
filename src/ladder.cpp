@@ -74,6 +74,61 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     }
     return {};
 }
-void load_words(set<string> & word_list, const string& file_name);
-void print_word_ladder(const vector<string>& ladder);
-void verify_word_ladder();
+void load_words(set<string> & word_list, const string& file_name)
+{
+    ifstream file(file_name);
+    if(!file)
+    {
+        cerr << "Error: Couldn't open " << file_name << endl;
+    }
+    string word;
+    while(file >> word)
+    {
+        word_list.insert(word);
+    }
+}
+
+
+void print_word_ladder(const vector<string>& ladder)
+{
+    if(ladder.empty())
+    {
+        cout << "No word ladder" << endl;
+        return;
+    }
+
+    for(size_t i = 0; i < ladder.size(); ++i)
+    {
+        cout << ladder[i];
+        if(i < ladder.size() -1) cout << " -> ";
+    }
+    cout << endl;
+}
+
+void verify_word_ladder()
+{
+    vector<string> ladder;
+    cout << "Enter a word ladder";
+    string word;
+    while(cin>> word)
+    {
+        ladder.push_back(word);
+    }
+
+    if(ladder.size() < 2)
+    {
+        cout << "Invalid word ladder. Must be at least 2 words." << endl;
+        return;
+    }
+
+
+    for(size_t i = 1; i < ladder.size(); ++i)
+    {
+        if(!is_adjacent(ladder[i-1], ladder[i]))
+        {
+            cout << ladder[i - 1] << " → " << ladder[i] << " is not a valid step." << endl;
+            return;
+        }
+    }
+    cout << "Valid word ladder!" << endl;
+}
