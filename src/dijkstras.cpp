@@ -1,5 +1,5 @@
 #include "dijkstras.h"
-
+#include <algorithm>
 using namespace std;
 
 
@@ -32,4 +32,27 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
         }
     }
     return distance;
+}
+
+vector<int> extract_shortest_path(const vector<int>& /*distances*/, const vector<int>& previous, int destination)
+{
+    vector<int> path;
+    for (int v = destination; v != -1; v = previous[v]) {
+        path.push_back(v);
+    }
+    reverse(path.begin(), path.end());
+    return path;
+}
+
+void print_path(const vector<int>& v, int total)
+{
+    if (v.size() == 1 && v[0] == 0) {
+        cout << "No path found." << endl;
+        return;
+    }
+    for (size_t i = 0; i < v.size(); i++) {
+        cout << v[i];
+        if (i < v.size() - 1) cout << " -> ";
+    }
+    cout << " (Cost: " << total << ")" << endl;
 }
